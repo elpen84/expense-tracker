@@ -31,11 +31,31 @@ function addTransactionDOM(transaction) {
 
   list.appendChild(item);
 }
+
+//update balance income and expense
+function updateValues() {
+  const amount = transaction.map((transaction) => transaction.amount);
+  const total = amount.reduce((acc, item) => (acc += item), 0).toFixed(2);
+
+const income = amount
+.filter(item => item > 0)
+.reduce((acct, item) => (acc += item), 0)
+.toFixed(2);
+
+const expense = amount
+.filter(item < 0)
+.reduce((acc,
+     item) => (acc += item), 0) * -1).toFixed(2)
+
+  console.log(total);
+}
+
 //init app
 function init() {
   list.innerHTML = "";
 
   transaction.forEach(addTransactionDOM);
+  updateValues();
 }
 
 init();
