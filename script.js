@@ -37,16 +37,19 @@ function updateValues() {
   const amount = transaction.map((transaction) => transaction.amount);
   const total = amount.reduce((acc, item) => (acc += item), 0).toFixed(2);
 
-const income = amount
-.filter(item => item > 0)
-.reduce((acct, item) => (acc += item), 0)
-.toFixed(2);
+  const income = amount
+    .filter((item) => item > 0)
+    .reduce((acct, item) => (acc += item), 0)
+    .toFixed(2);
 
-const expense = amount
-.filter(item < 0)
-.reduce((acc,
-     item) => (acc += item), 0) * -1).toFixed(2)
+  const expense = (
+    amount.filter((item) => item < 0).reduce((acc, item) => (acc += item), 0) *
+    -1
+  ).toFixed(2);
 
+  balance.innerText = `$${total}`;
+  money_plus.innerText = `$${income}`;
+  money_minus.innerText = `$${expense}`;
   console.log(total);
 }
 
