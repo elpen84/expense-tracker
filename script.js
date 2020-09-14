@@ -13,7 +13,35 @@ const dummy = [
   { id: 4, text: "Ryzen 5", amount: 500 },
 ];
 
-let transaction = dummy;
+let transactions = dummy;
+
+// add transaction
+function addTransaction(e) {
+  e.preventDefault();
+  if (text.value.trim() === "" || amount.value.trim() === "") {
+    alert("Please add a text and amount");
+  } else {
+    const transaction = {
+      id: generateID(),
+      text: text.value,
+      amount: +amount.value,
+    };
+
+    transactions.push(transaction);
+
+    addTransactionDOM(transaction);
+
+    updateValues();
+
+    text.value = "";
+    amount.value = "";
+  }
+}
+
+// generate random id
+function generateID() {
+  return Math.floor(Math.random() * 1000000000);
+}
 
 // add transaction to dom list
 
@@ -26,7 +54,9 @@ function addTransactionDOM(transaction) {
 
   item.innerHTML = `
         ${transaction.text} <span>${sign}${Math.abs(transaction.amount)}</span>
-        <button class="delete-btn">X</button>
+        <button class="delete-btn" onclick="removeTransaction(${
+          transaction.id
+        })">X</button>
     `;
 
   list.appendChild(item);
@@ -34,12 +64,12 @@ function addTransactionDOM(transaction) {
 
 //update balance income and expense
 function updateValues() {
-  const amount = transaction.map((transaction) => transaction.amount);
+  const amount = transactions.map((transaction) => transaction.amount);
   const total = amount.reduce((acc, item) => (acc += item), 0).toFixed(2);
 
   const income = amount
     .filter((item) => item > 0)
-    .reduce((acct, item) => (acc += item), 0)
+    .reduce((acct, item) => (acct += item), 0)
     .toFixed(2);
 
   const expense = (
@@ -53,12 +83,21 @@ function updateValues() {
   console.log(total);
 }
 
+// remove transaction by ID
+
+function removeTransaction(id) {
+  transactions = transaction.filter((transaction) => transaction.id !== id);
+  init();
+}
+
 //init app
 function init() {
   list.innerHTML = "";
 
-  transaction.forEach(addTransactionDOM);
+  transactions.forEach(addTransactionDOM);
   updateValues();
 }
 
 init();
+
+form.addEventListener("submit", addTransaction);
